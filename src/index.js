@@ -1,5 +1,16 @@
 import axios from 'axios';
 
+const currentDate = new Date();  
+
+// Display the month, day, and year. getMonth() returns a 0-based number.  
+const month = currentDate.getMonth()+1;  
+const day = currentDate.getDate();  
+const year = currentDate.getFullYear();  
+
+const todayDate = `${year}년 ${month}월 ${day}일 생성`;
+
+
+
 const postAPI = axios.create({
   baseURL: process.env.API_URL
 });
@@ -20,12 +31,12 @@ async function indexPage(){
   const res = await postAPI.get('/todos');
   const listFragment = document.importNode(templates.todoListEl,true);
   const formEl = listFragment.querySelector('.todo-list__form');
-  const modifyFragment = document.importNode(templates.modifyFormEl,true);
 
   
   res.data.forEach(post => {
     const bodyFragment = document.importNode(templates.todoItemEl,true);
     const bodyEl = bodyFragment.querySelector('.todo-list__body');
+    const dateEl = bodyFragment.querySelector('.date');
     const deleteEl = bodyFragment.querySelector('.todo-list__remove-btn');
     const modifyEl = bodyFragment.querySelector('.todo-list__modify-btn');
     const completeEl = bodyFragment.querySelector('.todo-list__complete-btn');
@@ -33,14 +44,16 @@ async function indexPage(){
     const modifyBtnEl = modifyFragment.querySelector('.modify__form');
     const modifyCancelBtnEl = modifyFragment.querySelector('.modify-cancel__btn');
 
+    listFragment.appendChild(dateEl).textContent = todayDate;
     listFragment.appendChild(bodyEl).textContent = post.body;
-
     listFragment.appendChild(completeEl);
     listFragment.appendChild(modifyEl);
     listFragment.appendChild(deleteEl);
 
     if(post.complete === true){
-      bodyEl.classList.add('complete-body');      
+      bodyEl.classList.add('complete-body'); 
+      modifyEl.remove();  
+      completeEl.remove();   
     }
     
     deleteEl.addEventListener('click', async e =>{
@@ -48,6 +61,7 @@ async function indexPage(){
       completeEl.remove();
       modifyEl.remove();
       deleteEl.remove();
+      dateEl.remove();
       const res = await postAPI.delete(`/todos/${post.id}`);
     });
 
@@ -57,6 +71,8 @@ async function indexPage(){
         complete: true
       }
       bodyEl.classList.add('complete-body');
+      modifyEl.remove();  
+      completeEl.remove(); 
       const res = await postAPI.patch(`/todos/${post.id}?${post.complete}`, payload);
     });
 
@@ -79,9 +95,9 @@ async function indexPage(){
     })
 
     modifyCancelBtnEl.addEventListener('click', async e => { 
+      e.preventDefault();
       indexPage();
     })
-
   })
 
 formEl.addEventListener('submit', async e =>{
