@@ -2,4 +2,16 @@ $main-color: skyblue;
 
 body {
   background-color: $main-color;
+  text-align: center;
+}
+
+.complete-body{
+  text-decoration: line-through;
+  color: gray;
+}
+
+.todo-list{
+  &__complete-btn, &__modify-btn, &__remove-btn{
+    margin: 3px;
+  }
 }

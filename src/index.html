@@ -8,7 +8,31 @@
   <link rel="stylesheet" href="./index.scss">
 </head>
 <body>
-  <h1>중간 프로젝트 템플릿</h1>
+  <div class="root"></div>
+  
+  <template id="todo-list">
+    <h1 class="header">Todo List</h1>
+    <form class="todo-list__form">
+      <input name="body" type="text" class="todo__input-body">
+      <button class="todo-list__btn">할 일 추가</button>
+    </form>
+  </template>
+
+  <template id="todo-item">
+      <p class="todo-list__body"></p>
+      <button class="todo-list__complete-btn">완료</button>      
+      <button class="todo-list__modify-btn">수정</button>
+      <button class="todo-list__remove-btn">삭제</button>
+  </template>
+
+  <template id="modify-form">
+    <form class="modify__form">
+      <input name="body" type="text" class="modify__input-body">
+      <button class="modify__btn">수정</button>
+      <button class="modify-cancel__btn">취소</button>      
+    </form>
+  </template>
+
   <script src="./index.js"></script>
 </body>
 </html>
