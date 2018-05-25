@@ -50,9 +50,9 @@ async function indexPage(){
     listFragment.appendChild(modifyEl);
     listFragment.appendChild(deleteEl);
 
-    if(post.complete === true){
+    if(post.complete){
       bodyEl.classList.add('complete-body'); 
-      modifyEl.remove();  
+      modifyEl.remove();   
       completeEl.remove();   
     }
     
